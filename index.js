@@ -11,6 +11,9 @@ import { currentIPAddress, currentTime } from "./util/constent/Constent.js";
 import { connectDB } from "./db.js";
 
 import Auth from "./route/Auth/AuthRoute.js"
+import Filter from "./route/TopFilter/FilterRoute.js"
+import todo from "./route/todoRoute/Todo.js"
+import suggestion from "./route/suggestionRoute/Suggestion.js"
 
 const app = express();
 dotenv.config();
@@ -29,6 +32,9 @@ app.use(helmet());
 app.use(morgan("dev"));
 
 app.use("/api/v1/auth", Auth)
+app.use("/api/v1/filter", Filter)
+app.use("/api/v1/todo", todo)
+app.use("/api/v1/suggestion", suggestion)
 
 app.get("/", (req, res) => {
     return res.status(200).json({

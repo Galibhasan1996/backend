@@ -24,10 +24,10 @@ const UserSchema = new mongoose.Schema({
         required: [true, "Mobile is required"],
         trim: true
     },
-    Todo: {
+    todos: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Todo"
-    }
+    }]
 }, { timestamps: true });
 
 
