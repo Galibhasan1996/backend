@@ -1,5 +1,5 @@
 import express from "express"
-import { createTodoController, getAllTodoController, pendingAllTodoController, updateAllTodoController } from "../../controller/todoController/todoConroller.js"
+import { AllTodoCountController, createTodoController, getAllTodoController, getCompleteAllTodoController, pendingAllTodoController, updateAllTodoController } from "../../controller/todoController/todoConroller.js"
 
 const route = express.Router()
 
@@ -17,9 +17,9 @@ route.patch('/todos/:todoId/complete', updateAllTodoController)
 
 route.patch('/todos/:todoId/pending', pendingAllTodoController)
 
-// router.get('/todos/complete/:date', getCompleteAllTodoController)
+route.get('/todos/complete/:date', getCompleteAllTodoController)
 
-// router.get('/todos/count', AllTodoCountController)
+route.get('/todos/count/:userId', AllTodoCountController)
 
 
 

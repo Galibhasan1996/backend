@@ -2,6 +2,8 @@ import moment from "moment";
 import UserModel from "../../model/AuthMedel/Auth.js";
 import TodoModel from "../../model/TodoModel/Todo.js";
 import { customConsole } from "../../util/constent/Constent.js";
+import mongoose from "mongoose";
+
 
 export const createTodoController = async (req, res) => {
     try {
@@ -162,3 +164,75 @@ export const pendingAllTodoController = async (req, res) => {
     }
 }
 
+
+export const getCompleteAllTodoController = async (req, res) => {
+    try {
+        const { date } = req.params
+
+        // const completeTodo = await TodoModel.find({})
+        const completeTodo = await TodoModel.find({
+            status: "complete", createdAt: {
+                $gte: new Date(`${date}T00:00:00.000Z`),
+                $lt: new Date(`${date}T23:59:59.9999Z`)
+            }
+        }).exec()
+
+        if (!completeTodo) {
+            return res.status(400).json({
+                status: false,
+                error: "Todo not found"
+            })
+        }
+        return res.status(200).json({
+            status: true,
+            message: "Todo get successfully",
+            count: completeTodo.length,
+            completeTodo
+        })
+
+
+    } catch (error) {
+        console.log("🚀 ~ file: todoConroller.js:193 ~ getCompleteAllTodoController ~ error:", error)
+        res.status(500).json({
+            status: false,
+            error: "Internal server error",
+            error: error.message
+        });
+    }
+}
+
+
+export const AllTodoCountController = async (req, res) => {
+    try {
+
+
+        const { userId } = req.params
+
+
+        const user = await UserModel.findById({ _id: userId }).populate("todos")
+
+
+
+        if (!user) {
+            return res.status(400).json({
+                status: false,
+                error: "complete todo not found"
+            })
+        }
+
+        return res.status(200).json({
+            // status: true,
+            // message: "Todo count successfully",
+            user: user.todos
+        })
+
+
+    } catch (error) {
+        console.log("🚀 ~ file: createTodoController.js:231 ~ AllTodoCountController ~ error:", error)
+        return res.status(500).json({
+            status: false,
+            error: "Internal Server Error",
+            error: error
+        })
+    }
+}
